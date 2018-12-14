@@ -10,7 +10,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author Shawn Cameron
  */
 public class MainMenu extends javax.swing.JFrame{
-   public static TheHashTable theHash = new TheHashTable(3);
+    public static TheHashTable theHash = new TheHashTable(3);
    
     /**
      * Creates new form MainMenu
@@ -464,7 +464,7 @@ public class MainMenu extends javax.swing.JFrame{
         }
         
     }
-    //opens the jFileChooser and allow the user to save the file
+    //opens the jFileChooser to allow the user to save the file
     private void saveWithSaveAs(){
         fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
         fileChooser.setFileFilter(new FileNameExtensionFilter("Serialized File","ser"));
