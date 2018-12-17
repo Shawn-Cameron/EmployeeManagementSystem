@@ -14,8 +14,8 @@ public class EditEmployee extends javax.swing.JFrame {
      * Creates new form EditEmployee
      */
     private static EmployeeInfo theEmployee;
-    private static FTE theEmployeeF;
-    private static PTE theEmployeeP;
+    private static FTE theFullTimeE;
+    private static PTE thePartTimeE;
     
     public EditEmployee(EmployeeInfo employee) {
         initComponents();
@@ -28,10 +28,10 @@ public class EditEmployee extends javax.swing.JFrame {
             weeksPerYearText.setVisible(false);
             partTWeeks.setVisible(false);
             eNameType.setText("Full Time Employee Editor");
-            this.theEmployeeF = (FTE) theEmployee;
+            this.theFullTimeE = (FTE) theEmployee;
             showCurrentInfo();
         }else if(theEmployee instanceof PTE){
-            this.theEmployeeP = (PTE) theEmployee;
+            this.thePartTimeE = (PTE) theEmployee;
             salOrIncome.setText("Income/Hour");
             eNameType.setText("Part Time Employee Editor");
             toPartOrFullButton.setText("Change to Full Time");
@@ -294,23 +294,23 @@ public class EditEmployee extends javax.swing.JFrame {
    
     private void showCurrentInfo(){
         if(theEmployee instanceof FTE){
-            firstNameText.setText(theEmployeeF.getName());
-            lastNameText.setText(theEmployeeF.getSurname());
-            employeeNumberText.setText(Integer.toString(theEmployeeF.getEmployeeNumber()));
-            displaySex(theEmployeeF);
-            workLocationCBox.setSelectedItem(theEmployeeF.getWorkLocation());
-            salOrIncomeText.setText(Float.toString(theEmployeeF.getSalary()));
-            deductionRateText.setText(Float.toString(Math.round(theEmployeeF.getDeductionRate()* 100.0)/100.0f));
+            firstNameText.setText(theFullTimeE.getName());
+            lastNameText.setText(theFullTimeE.getSurname());
+            employeeNumberText.setText(Integer.toString(theFullTimeE.getEmployeeNumber()));
+            displaySex(theFullTimeE);
+            workLocationCBox.setSelectedItem(theFullTimeE.getWorkLocation());
+            salOrIncomeText.setText(Float.toString(theFullTimeE.getSalary()));
+            deductionRateText.setText(Float.toString(Math.round(theFullTimeE.getDeductionRate()* 100.0)/100.0f));
         } else {
-            firstNameText.setText(theEmployeeP.getName());
-            lastNameText.setText(theEmployeeP.getSurname());
-            employeeNumberText.setText(Integer.toString(theEmployeeP.getEmployeeNumber()));
-            displaySex(theEmployeeP);
-            workLocationCBox.setSelectedItem(theEmployeeP.getWorkLocation());
-            salOrIncomeText.setText(Float.toString(theEmployeeP.getIncomePerHour()));
-            hoursPerWeekText.setText(Integer.toString(theEmployeeP.getHoursPerWeek()));
-            weeksPerYearText.setText(Integer.toString(theEmployeeP.getWeeksPerYear()));
-            deductionRateText.setText(Float.toString(Math.round(theEmployeeF.getDeductionRate()* 100.0)/100.0f));
+            firstNameText.setText(thePartTimeE.getName());
+            lastNameText.setText(thePartTimeE.getSurname());
+            employeeNumberText.setText(Integer.toString(thePartTimeE.getEmployeeNumber()));
+            displaySex(thePartTimeE);
+            workLocationCBox.setSelectedItem(thePartTimeE.getWorkLocation());
+            salOrIncomeText.setText(Float.toString(thePartTimeE.getIncomePerHour()));
+            hoursPerWeekText.setText(Float.toString(thePartTimeE.getHoursPerWeek()));
+            weeksPerYearText.setText(Integer.toString(thePartTimeE.getWeeksPerYear()));
+            deductionRateText.setText(Float.toString(Math.round(thePartTimeE.getDeductionRate()* 100.0)/100.0f));
         }
     }
     
@@ -340,9 +340,10 @@ public class EditEmployee extends javax.swing.JFrame {
                 int eNum = Integer.parseInt(employeeNumberText.getText());
                 int wL = getTheWorkLocation();
                 float income = Float.parseFloat(salOrIncomeText.getText());
-                int hours = Integer.parseInt(hoursPerWeekText.getText());
+                float hours = Float.parseFloat(hoursPerWeekText.getText());
                 int weeks = Integer.parseInt(weeksPerYearText.getText());
                 float dRate = Float.parseFloat(deductionRateText.getText());
+                checkWeeksYears(hours,weeks);
                 checkDRate(dRate);
                 
                 if (fN.isEmpty() || lN.isEmpty()){
@@ -376,6 +377,12 @@ public class EditEmployee extends javax.swing.JFrame {
     
     private void checkDRate(float dRate) throws Exception{
         if(dRate<0.0 || dRate>100.0){
+            throw new Exception();
+        }
+    }
+    
+    private void checkWeeksYears(float hours, int weeks)throws Exception{
+        if(weeks < 1 || weeks > 52 || hours <= 0 || hours > 168){
             throw new Exception();
         }
     }
