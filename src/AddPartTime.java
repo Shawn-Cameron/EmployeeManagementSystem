@@ -236,8 +236,8 @@ public class AddPartTime extends javax.swing.JFrame {
         femaleBox.setSelected(false);
     }//GEN-LAST:event_otherBoxActionPerformed
     /**
-     * collects all the entered information
-     * and saves it if all the information is there
+     * Gets the information the user entered for the employee
+     * and adds them to the table as an instance of a part time employee
      * @param evt 
      */
     private void addEmployeeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addEmployeeButtonActionPerformed
@@ -247,10 +247,11 @@ public class AddPartTime extends javax.swing.JFrame {
             int employeeNum = Integer.parseInt(employeeNumberText.getText().trim());
             int workLocation = getTheWorkLocation();
             float income = Float.parseFloat(incomePerHourText.getText());
-            int hours = Integer.parseInt(hoursPerWeekText.getText());
+            float hours = Float.parseFloat(hoursPerWeekText.getText());
             int weeks = Integer.parseInt(weeksPerYearText.getText());
             float deductionRate = Float.parseFloat(deductionRateText.getText());
             checkDRate(deductionRate);
+            checkWeeksYears(hours, weeks);
             PTE newGuy = new PTE(employeeNum,firstName,lastName,getTheSex(),workLocation,income,hours,weeks,deductionRate);
             MainMenu.theHash.addToTable(newGuy);
             MainMenu.theHash.setWasSaved(false);
@@ -266,6 +267,7 @@ public class AddPartTime extends javax.swing.JFrame {
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         this.dispose();
     }//GEN-LAST:event_cancelButtonActionPerformed
+    
     /**
      * returns the sex based on the check box selected
      * @return the integer that represents the sex
@@ -282,6 +284,7 @@ public class AddPartTime extends javax.swing.JFrame {
             throw new Exception();
         }
     }
+    
     /**
      * Checks if the deduction rate is below 0% or above 100%
      * @param dRate 
@@ -292,10 +295,23 @@ public class AddPartTime extends javax.swing.JFrame {
             throw new Exception();
         }
     }
+    
     /**
-     * gets the item 
-     * @return
-     * @throws Exception 
+     * Checks if the hours and weeks are possible
+     * @param hours 
+     * @param weeks 
+     * @throws Exception when the hours per week or weeks per year are impossible
+     */
+    private void checkWeeksYears(float hours, int weeks)throws Exception{
+        if(weeks < 1 || weeks > 52 || hours <= 0 || hours > 168){
+            throw new Exception();
+        }
+    }
+    
+    /**
+     * Gets the work location integer value from the JComboBox
+     * @return the integer value 
+     * @throws Exception when the JComboBox is set to "Choose"
      */
     private int getTheWorkLocation() throws Exception{
         int itemIndex = workLocationCBox.getSelectedIndex();

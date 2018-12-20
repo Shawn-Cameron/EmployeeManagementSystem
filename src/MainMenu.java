@@ -22,7 +22,7 @@ public class MainMenu extends javax.swing.JFrame{
         displayEmployees();
         employeeTable.setAutoCreateRowSorter(true);
         this.getRootPane().setDefaultButton(searchButton);
-        setTheFileInTitle();
+        
     }
 
     /**
@@ -46,10 +46,8 @@ public class MainMenu extends javax.swing.JFrame{
         displayFTButton = new javax.swing.JToggleButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
-        newMenu = new javax.swing.JMenuItem();
         saveMenu = new javax.swing.JMenuItem();
-        saveAsMenu = new javax.swing.JMenuItem();
-        loadMenu = new javax.swing.JMenuItem();
+        loadEmployeeInfo = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         deleteAll = new javax.swing.JMenuItem();
         pProtect = new javax.swing.JMenuItem();
@@ -58,7 +56,6 @@ public class MainMenu extends javax.swing.JFrame{
         fileChooser.setDialogTitle("Choose File");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1000, 510));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
@@ -138,15 +135,6 @@ public class MainMenu extends javax.swing.JFrame{
 
         fileMenu.setText("File");
 
-        newMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
-        newMenu.setText("New");
-        newMenu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                newMenuActionPerformed(evt);
-            }
-        });
-        fileMenu.add(newMenu);
-
         saveMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         saveMenu.setText("Save");
         saveMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -156,23 +144,14 @@ public class MainMenu extends javax.swing.JFrame{
         });
         fileMenu.add(saveMenu);
 
-        saveAsMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        saveAsMenu.setText("Save As");
-        saveAsMenu.addActionListener(new java.awt.event.ActionListener() {
+        loadEmployeeInfo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
+        loadEmployeeInfo.setText("Load");
+        loadEmployeeInfo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saveAsMenuActionPerformed(evt);
+                loadEmployeeInfoActionPerformed(evt);
             }
         });
-        fileMenu.add(saveAsMenu);
-
-        loadMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
-        loadMenu.setText("Open");
-        loadMenu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                loadMenuActionPerformed(evt);
-            }
-        });
-        fileMenu.add(loadMenu);
+        fileMenu.add(loadEmployeeInfo);
 
         jMenuBar1.add(fileMenu);
 
@@ -261,15 +240,17 @@ public class MainMenu extends javax.swing.JFrame{
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    
     /**
-     * opens the adding function to add the employee
+     * Opens the adding function to add the employee
      * @param evt 
      */
     private void addEmployeeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addEmployeeButtonActionPerformed
         new AddNewEmployee().setVisible(true);
     }//GEN-LAST:event_addEmployeeButtonActionPerformed
+    
     /**
-     * uses the users entry to get a filtered list to display in jTable
+     * Uses the users entry to get a filtered list to display in jTable
      * @param evt 
      */
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
@@ -282,34 +263,18 @@ public class MainMenu extends javax.swing.JFrame{
           
         }
     }//GEN-LAST:event_searchButtonActionPerformed
+    
     /**
      * Check if the file exist and runs
-     * either saves or opens jFile Chooser to save as
+     * either saves or opens jFileChooser to save as
      * @param evt 
      */
     private void saveMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuActionPerformed
-        if(theHash.checkIfSaveAsNeeded()){
-            saveWithSaveAs();
-        }else{
-            theHash.saveEmployeeInfo();
-        }
+        theHash.saveEmployeeInfo();
     }//GEN-LAST:event_saveMenuActionPerformed
+    
     /**
-     * Checks if the user needs to save
-     * then opens jFile chooser
-     * @param evt 
-     */
-    private void loadMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadMenuActionPerformed
-        boolean checker = theHash.checkIfSaved();
-        if(!checker){
-            new SaveCheck(false,true).setVisible(true);
-        }else{
-            openFunction();
-            setTheFileInTitle();
-        }
-    }//GEN-LAST:event_loadMenuActionPerformed
-    /**
-     * displays all the employees on the table
+     * Displays all the employees on the table
      * @param evt 
      */
     private void resetTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetTableActionPerformed
@@ -318,8 +283,9 @@ public class MainMenu extends javax.swing.JFrame{
         displayEmployees();
         
     }//GEN-LAST:event_resetTableActionPerformed
+    
     /**
-     * opens all of an employee's information 
+     * Opens all of an employee's information 
      * @param evt - when double clicked
      */
     private void employeeTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employeeTableMouseClicked
@@ -329,28 +295,30 @@ public class MainMenu extends javax.swing.JFrame{
            new DisplayEmployeeInfo(e).setVisible(true);
         }
     }//GEN-LAST:event_employeeTableMouseClicked
+    
     /**
-     * checks if the changes has been saved
+     * Checks if the changes has been saved
      * @param evt 
      */
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         boolean checker = theHash.checkIfSaved();
-        theHash.saveLastDirectory();
         if(!checker){
-            new SaveCheck(true,false).setVisible(true);
+            new SaveCheck().setVisible(true);
         }else{
             System.exit(0);
         }
     }//GEN-LAST:event_formWindowClosing
+    
     /**
-     * for deleting all the employees in the table
+     * For deleting all the employees in the table
      * @param evt 
      */
     private void deleteAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteAllActionPerformed
         new ConfirmDelete().setVisible(true);
     }//GEN-LAST:event_deleteAllActionPerformed
+    
     /**
-     * displays only part time employees
+     * Displays only part time employees
      * @param evt 
      */
     private void displayPTButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_displayPTButtonActionPerformed
@@ -359,8 +327,9 @@ public class MainMenu extends javax.swing.JFrame{
         }
         displayEmployees();
     }//GEN-LAST:event_displayPTButtonActionPerformed
+    
     /**
-     * displays only full time employees
+     * Displays only full time employees
      * @param evt 
      */
     private void displayFTButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_displayFTButtonActionPerformed
@@ -369,6 +338,7 @@ public class MainMenu extends javax.swing.JFrame{
         }
         displayEmployees();
     }//GEN-LAST:event_displayFTButtonActionPerformed
+    
     /**
      * opens the jDialog to allow password and phone number change 
      * @param evt 
@@ -376,8 +346,9 @@ public class MainMenu extends javax.swing.JFrame{
     private void pProtectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pProtectActionPerformed
         new PasswordOptions(this,true).setVisible(true);
     }//GEN-LAST:event_pProtectActionPerformed
+    
     /**
-     * deletes the password file and the phone number 
+     * Deletes the password file and the phone number 
      * that is associated with it
      * @param evt - button click
      */
@@ -393,25 +364,21 @@ public class MainMenu extends javax.swing.JFrame{
             JOptionPane.showMessageDialog(this,"Password removed");
         }
     }//GEN-LAST:event_pRemoveActionPerformed
-
-    private void saveAsMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsMenuActionPerformed
-        saveWithSaveAs();
-    }//GEN-LAST:event_saveAsMenuActionPerformed
-
-    private void newMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newMenuActionPerformed
-        boolean checker = theHash.checkIfSaved();
-        if(!checker){
-            new SaveCheck(false,false).setVisible(true);
-            this.setTitle("Employee Management System  [New File]");
-            
-        }else{
-            theHash.setLoadedFileDirectory("");
-            theHash.setSaveAsNeeded(true);
-            theHash.deleteTable();
-            setTheFileInTitle();
-        }
-    }//GEN-LAST:event_newMenuActionPerformed
-    //takes the filtered list and displays the employees
+    
+    /**
+     * Displays the previously saved information
+     * @param evt 
+     */
+    private void loadEmployeeInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadEmployeeInfoActionPerformed
+        theHash.deleteTable();
+        theHash.loadEmployeeInfo();
+        displayEmployees();
+    }//GEN-LAST:event_loadEmployeeInfoActionPerformed
+    
+    /**
+     * Takes the filtered list and displays the employees
+     * @param list of employees that had the search requirements 
+     */
     private void displaySearched(ArrayList<EmployeeInfo> list){
         DefaultTableModel model = (DefaultTableModel)employeeTable.getModel();
         model.setRowCount(0);
@@ -427,7 +394,10 @@ public class MainMenu extends javax.swing.JFrame{
                 }
             } 
     }
-    //displays the employees based on what types the user wants to see
+    
+    /**
+     * Displays the employees based on what types the user wants to see
+     */
     public static void displayEmployees(){
         DefaultTableModel model = (DefaultTableModel)employeeTable.getModel();
         model.setRowCount(0);
@@ -464,56 +434,10 @@ public class MainMenu extends javax.swing.JFrame{
         }
         
     }
-    //opens the jFileChooser to allow the user to save the file
-    private void saveWithSaveAs(){
-        fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
-        fileChooser.setFileFilter(new FileNameExtensionFilter("Serialized File","ser"));
-        fileChooser.setAcceptAllFileFilterUsed(false);
-        if(fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION){
-            String path = fileChooser.getSelectedFile().getAbsolutePath();
-            String fileName = fileChooser.getSelectedFile().getName();
-            if(!fileName.endsWith(".ser")){
-                path += ".ser";
-                theHash.saveAs(path);
-           }
-        }
-        setTheFileInTitle();
-    }
-    //loads the employee information from the chosen file
-    private void openFunction(){
-        fileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
-        fileChooser.setFileFilter(new FileNameExtensionFilter("Serialized File","ser"));
-        fileChooser.setAcceptAllFileFilterUsed(false);
-        if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            String theFileChooser = fileChooser.getSelectedFile().getAbsolutePath();
-            theHash.setLoadedFileDirectory(theFileChooser);
-            theHash.deleteTable();
-            theHash.loadEmployeeInfo();
-            displayEmployees();
-        } else {
-            System.out.println("File access cancelled by user.");
-        }
-        theHash.setSaveAsNeeded(false);
-        setTheFileInTitle();
-    }
-    //changes the title to show the path of the file the user has opened
-    private void setTheFileInTitle(){
-        try{
-            this.setTitle("Employee Management System  [New File]");
-            theHash.setSaveAsNeeded(true);
-            File theFile = new File(theHash.getFileName());
-            if(theFile.exists()){
-                this.setTitle("Employee Management System  ["+theHash.getFileName()+"]");
-                theHash.setSaveAsNeeded(false);
-            }
-        }catch(Exception e){
-            
-        }
-    }
+    
     /**
      * @param args the command line arguments
      */
-    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -543,6 +467,7 @@ public class MainMenu extends javax.swing.JFrame{
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try{
+                    // no password is set if this fails
                     PasswordOptions.collectComparePassword("water");
                     new LoginPage().setVisible(true);
                 }catch(FileNotFoundException e){
@@ -566,12 +491,10 @@ public class MainMenu extends javax.swing.JFrame{
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JMenuItem loadMenu;
-    private javax.swing.JMenuItem newMenu;
+    private javax.swing.JMenuItem loadEmployeeInfo;
     private javax.swing.JMenuItem pProtect;
     private javax.swing.JMenuItem pRemove;
     private javax.swing.JButton resetTable;
-    private javax.swing.JMenuItem saveAsMenu;
     private javax.swing.JMenuItem saveMenu;
     private javax.swing.JButton searchButton;
     private javax.swing.JTextField searchEmployeeText;

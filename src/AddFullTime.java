@@ -218,7 +218,12 @@ public class AddFullTime extends javax.swing.JFrame {
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
        this.dispose();
     }//GEN-LAST:event_cancelButtonActionPerformed
-
+    
+    /**
+     * Gets the information the user entered for the employee
+     * and adds them to the table as an instance of a full time employee
+     * @param evt 
+     */
     private void addEmployeeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addEmployeeButtonActionPerformed
         try{    
             String firstName = firstNameText.getText().trim();
@@ -239,6 +244,12 @@ public class AddFullTime extends javax.swing.JFrame {
             errorLabel.setText("Error creating the employee please check the information provided");
         }
     }//GEN-LAST:event_addEmployeeButtonActionPerformed
+    
+    /**
+     * returns the sex based on the check box selected
+     * @return the integer that represents the sex
+     * @throws Exception when no box is selected
+     */
     private int getTheSex() throws Exception{
         if(maleBox.isSelected()){
             return 0;
@@ -250,7 +261,12 @@ public class AddFullTime extends javax.swing.JFrame {
             throw new Exception();
         }
     }
-         
+   
+    /**
+     * Gets the work location integer value from the JComboBox
+     * @return the integer value 
+     * @throws Exception when the JComboBox is set to "Choose"
+     */
     private int getTheWorkLocation() throws Exception{
         int itemIndex = workLocationCBox.getSelectedIndex();
         if (itemIndex == 0){
@@ -259,12 +275,18 @@ public class AddFullTime extends javax.swing.JFrame {
             return itemIndex;
         }
     }
-        
+    
+    /**
+     * Checks if the deduction rate is below 0% or above 100%
+     * @param dRate 
+     * @throws Exception when the deduction rate out of the range
+     */    
     private void checkDRate(float dRate) throws Exception{
         if(dRate<0 || dRate>100){
             throw new Exception();
         }
     }        
+    
     /**
      * @param args the command line arguments
      */

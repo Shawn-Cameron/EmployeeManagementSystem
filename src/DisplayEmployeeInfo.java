@@ -14,8 +14,8 @@ public class DisplayEmployeeInfo extends javax.swing.JFrame {
      */
     private static EmployeeInfo theEmployee;
     //created variables the allow the calling of the information
-    private static PTE theEmployeeP;
-    private static FTE theEmployeeF;
+    private static PTE thePartTimeE;
+    private static FTE theFullTimeE;
     
     public DisplayEmployeeInfo(EmployeeInfo employee) {
         initComponents();
@@ -31,11 +31,11 @@ public class DisplayEmployeeInfo extends javax.swing.JFrame {
             weeksLabel.setVisible(false);
             incomeLabel.setVisible(false);
             partTIncome.setVisible(false);
-            this.theEmployeeF = (FTE)theEmployee;
+            this.theFullTimeE = (FTE)theEmployee;
             displayInfoFull();
         }else if(employee instanceof PTE){
             salOrWage.setText("Wage");
-            this.theEmployeeP = (PTE)theEmployee;
+            this.thePartTimeE = (PTE)theEmployee;
             displayInfoPart();
         }
     }
@@ -261,42 +261,52 @@ public class DisplayEmployeeInfo extends javax.swing.JFrame {
     private void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButtonActionPerformed
         this.dispose();
     }//GEN-LAST:event_closeButtonActionPerformed
-
+    
+    /**
+     * Deletes the employee by their number
+     * @param evt 
+     */
     private void deleteEmployeeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteEmployeeButtonActionPerformed
         MainMenu.theHash.removeEmployee(theEmployee.getEmployeeNumber());
         MainMenu.theHash.setWasSaved(false);
         MainMenu.displayEmployees();
         this.dispose();
     }//GEN-LAST:event_deleteEmployeeButtonActionPerformed
-
+    
+    /**
+     * Opens the edit jFrame
+     * @param evt 
+     */
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
         new EditEmployee(theEmployee).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_editButtonActionPerformed
-
+    
+    //Displays full time employee's information
     private void displayInfoFull(){
-        firstNameLabel.setText(theEmployeeF.getName());
-        lastNameLabel.setText(theEmployeeF.getSurname());
-        empNumLabel.setText(Integer.toString(theEmployeeF.getEmployeeNumber()));
-        sexLabel.setText(theEmployeeF.getSex());
-        workLocationLabel.setText(theEmployeeF.getWorkLocation());
-        salaryOrWageLabel.setText(Float.toString(Math.round(theEmployeeF.getPayment()*100.0)/100.0f));
-        deductionRateLabel.setText(Float.toString(Math.round(theEmployeeF.getDeductionRate()* 100.0)/100.0f));
-        eNameType.setText(theEmployeeF.getName()+" "+theEmployeeF.getSurname()+" (Full Time Employee)");
+        firstNameLabel.setText(theFullTimeE.getName());
+        lastNameLabel.setText(theFullTimeE.getSurname());
+        empNumLabel.setText(Integer.toString(theFullTimeE.getEmployeeNumber()));
+        sexLabel.setText(theFullTimeE.getSex());
+        workLocationLabel.setText(theFullTimeE.getWorkLocation());
+        salaryOrWageLabel.setText(Float.toString(Math.round(theFullTimeE.getPayment()*100.0)/100.0f));
+        deductionRateLabel.setText(Float.toString(Math.round(theFullTimeE.getDeductionRate()* 100.0)/100.0f));
+        eNameType.setText(theFullTimeE.getName()+" "+theFullTimeE.getSurname()+" (Full Time Employee)");
     }
     
+    //Displays part time employee's information
     private void displayInfoPart(){
-        firstNameLabel.setText(theEmployeeP.getName());
-        lastNameLabel.setText(theEmployeeP.getSurname());
-        empNumLabel.setText(Integer.toString(theEmployeeP.getEmployeeNumber()));
-        sexLabel.setText(theEmployeeP.getSex());
-        workLocationLabel.setText(theEmployeeP.getWorkLocation());
-        salaryOrWageLabel.setText(Float.toString(theEmployeeP.getPayment()));
-        incomeLabel.setText(Float.toString(theEmployeeP.getIncomePerHour()));
-        hoursLabel.setText(Integer.toString(theEmployeeP.getHoursPerWeek()));
-        weeksLabel.setText(Integer.toString(theEmployeeP.getWeeksPerYear()));
-        deductionRateLabel.setText(Float.toString(Math.round(theEmployeeP.getDeductionRate()* 100.0)/100.0f));
-        eNameType.setText(theEmployeeP.getName()+" "+theEmployeeP.getSurname()+" (Part Time Employee)");
+        firstNameLabel.setText(thePartTimeE.getName());
+        lastNameLabel.setText(thePartTimeE.getSurname());
+        empNumLabel.setText(Integer.toString(thePartTimeE.getEmployeeNumber()));
+        sexLabel.setText(thePartTimeE.getSex());
+        workLocationLabel.setText(thePartTimeE.getWorkLocation());
+        salaryOrWageLabel.setText(Float.toString(thePartTimeE.getPayment()));
+        incomeLabel.setText(Float.toString(thePartTimeE.getIncomePerHour()));
+        hoursLabel.setText(Float.toString(thePartTimeE.getHoursPerWeek()));
+        weeksLabel.setText(Integer.toString(thePartTimeE.getWeeksPerYear()));
+        deductionRateLabel.setText(Float.toString(Math.round(thePartTimeE.getDeductionRate()* 100.0)/100.0f));
+        eNameType.setText(thePartTimeE.getName()+" "+thePartTimeE.getSurname()+" (Part Time Employee)");
     }
     
 

@@ -17,11 +17,12 @@ public class FTE extends EmployeeInfo {
         calAnnual(income);
         this.salary = income;
     }
-    
+    // calculates the pay with the deduction rate
     private void calAnnual(float income){
         this.payment = income*(1 - deductionRate);
     }
     
+    //getter and setter method for salary
     public void setSalary(float sal){
         this.salary = sal;
     }

@@ -4,10 +4,6 @@ import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
 import java.util.concurrent.ThreadLocalRandom;
 
-
-
-
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -25,6 +21,7 @@ public class AccountRecover extends javax.swing.JDialog {
     private final String twilioPhoneNum = "+15067025382";
     // stored temporary password
     private String tempPassword;
+    
     /**
      * Creates new form AccountRecover
      */
@@ -58,7 +55,7 @@ public class AccountRecover extends javax.swing.JDialog {
         userPhoneNumText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Check you mobile phone for your temporary password");
+        jLabel1.setText("Check your mobile phone for your temporary password");
 
         submitButton.setText("Submit");
         submitButton.addActionListener(new java.awt.event.ActionListener() {
@@ -119,9 +116,12 @@ public class AccountRecover extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    /* Checks if the password the user entered was the same
-       as the one that was sent to their phone
-    */
+    
+    /**
+     * Checks if the code that the user entered was the same
+     * as the one that was sent to their phone
+     * @param evt 
+     */
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
         String userTempPass = userPhoneNumText.getText().replaceAll("\\s+","");
         if(userTempPass.equals(tempPassword)){
@@ -135,9 +135,13 @@ public class AccountRecover extends javax.swing.JDialog {
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         this.dispose();
     }//GEN-LAST:event_cancelButtonActionPerformed
-    /* Uses twilio api to send msgs to the phone number that
-       was provided from creating the password
-    */
+   
+    /**
+     * Uses the twilio API to send messages to the phone number that
+     * was provided from creating the password
+     * 
+     * Note: may stop working after too many requests 
+     */
     private void sendSMS(){
          try{
             this.tempPassword =  Integer.toString(ThreadLocalRandom.current().nextInt(100000, 1000000));
@@ -150,6 +154,9 @@ public class AccountRecover extends javax.swing.JDialog {
             e.printStackTrace();
         }
     }
+    
+    
+    
     /**
      * @param args the command line arguments
      */

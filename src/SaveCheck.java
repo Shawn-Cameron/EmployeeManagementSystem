@@ -1,10 +1,3 @@
-
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileNameExtensionFilter;
-
-
-
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -17,19 +10,16 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  */
 public class SaveCheck extends javax.swing.JFrame {
     
-    private boolean shouldExit; 
-    private boolean shouldOpen;
+
     /**
-     * sCreates new form SaveCheck
+     * Creates new form SaveCheck
      */
-    public SaveCheck(boolean exit, boolean open) {
+    public SaveCheck() {
         initComponents();
         this.setLocationRelativeTo(null);
         this.setAlwaysOnTop(true);
-        // class needs to know what to do after it checks if the 
-        // user wants to save or not
-        this.shouldExit = exit;
-        this.shouldOpen = open;
+
+
     }
 
     /**
@@ -107,75 +97,18 @@ public class SaveCheck extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-
-        if(MainMenu.theHash.checkIfSaveAsNeeded()){
-                
-            fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
-            fileChooser.setFileFilter(new FileNameExtensionFilter("Serialized Files only","ser"));
-            fileChooser.setAcceptAllFileFilterUsed(false);
-            if(fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION){
-                String path = fileChooser.getSelectedFile().getAbsolutePath();
-                String fileName = fileChooser.getSelectedFile().getName();
-                if(!fileName.endsWith(".ser")){
-                    path += ".ser";
-                }
-                MainMenu.theHash.saveAs(path);
-                MainMenu.displayEmployees();
-                
-            }
-        }else{
-            MainMenu.theHash.saveEmployeeInfo();
-            MainMenu.theHash.deleteTable();
-            MainMenu.displayEmployees();
-        }
-        
-        if(shouldExit){
-            System.exit(0);
-        }else if(shouldOpen){
-            loadTheInfo();
-            this.dispose();
-        }else{
-            this.dispose();
-        }
+        MainMenu.theHash.saveEmployeeInfo();
+        System.exit(0);
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
-        if(shouldExit){
-            System.exit(0);
-        }else if(shouldOpen){
-            loadTheInfo();
-            this.dispose();
-        }else{
-            MainMenu.theHash.deleteTable();
-            MainMenu.theHash.setLoadedFileDirectory("");
-            MainMenu.theHash.setSaveAsNeeded(true);
-            MainMenu.displayEmployees();
-            this.dispose();
-        }
+        System.exit(0);
     }//GEN-LAST:event_exitButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         this.dispose();
     }//GEN-LAST:event_cancelButtonActionPerformed
-
-    private void loadTheInfo(){
-        fileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
-        fileChooser.setFileFilter(new FileNameExtensionFilter("Serialized File","ser"));
-        fileChooser.setAcceptAllFileFilterUsed(false);
-        if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            String theFileChooser = fileChooser.getSelectedFile().getAbsolutePath();
-            MainMenu.theHash.setLoadedFileDirectory(theFileChooser);
-            MainMenu.theHash.deleteTable();
-            MainMenu.theHash.loadEmployeeInfo(); 
-            MainMenu.displayEmployees();
-        } else {
-            System.out.println("File access cancelled by user.");
-        }
-        this.dispose();
-    }
-
-   
-            
+         
     /**
      * @param args the command line arguments
      */
@@ -206,7 +139,7 @@ public class SaveCheck extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new SaveCheck(false,false).setVisible(true);
+                new SaveCheck().setVisible(true);
             }
         });
     }

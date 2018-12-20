@@ -161,7 +161,6 @@ public class PasswordOptions extends javax.swing.JDialog {
     //hashes the password so no one can read from it 
     private static String hashPassword(String pass){
         String generatedPassword = "";
-       
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-512");
             byte[] bytes = md.digest(pass.getBytes(StandardCharsets.UTF_8));
@@ -176,9 +175,10 @@ public class PasswordOptions extends javax.swing.JDialog {
         return generatedPassword;
     }
     
-    /* displays the phone number when user decides to change their password,
-       in the case that they might want to change their phone number
-    */
+    /**
+     * displays the phone number when user decides to change their password,
+     * in the case that they might want to change their phone number as well
+     */
     private void displayPNEntry(){
         File phoneNFile = new File(phoneNumberFile);
         if (phoneNFile.exists()){
@@ -186,6 +186,10 @@ public class PasswordOptions extends javax.swing.JDialog {
         }
     }
     
+    /**
+     * Encrypts the Password and saves it to a file
+     * @param pass  
+     */
     private void encryptSavePassword(String pass) {
         try {
             Path theFilePath = Paths.get(passFile);
@@ -209,7 +213,13 @@ public class PasswordOptions extends javax.swing.JDialog {
             e.printStackTrace();
         }
     }
-    // gets the hashed password and compares it to the users password entry
+    
+    /**
+     * Gets the hashed password and compares it to the users password entry
+     * @param password
+     * @return true if the password matches
+     * @throws FileNotFoundException when there is no password
+     */
     public static boolean collectComparePassword(String password) throws FileNotFoundException {
         try{
             FileInputStream file = new FileInputStream(passFile);
@@ -233,8 +243,12 @@ public class PasswordOptions extends javax.swing.JDialog {
         }
         return false;
     }
-    // saves the phone number and hides the file
-    public static void savePhoneNumber(String phoneNum){
+    
+    /**
+     * saves the phone number and hides the file
+     * @param phoneNum from user entry
+     */
+    private static void savePhoneNumber(String phoneNum){
         try{
             Path theFilePath = Paths.get(phoneNumberFile);
             
@@ -281,6 +295,12 @@ public class PasswordOptions extends javax.swing.JDialog {
     public static String getPNFile(){
         return phoneNumberFile;
     }
+    
+    
+    
+    
+    
+    
     /**
      * @param args the command line arguments
      */

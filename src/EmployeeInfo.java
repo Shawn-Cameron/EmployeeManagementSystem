@@ -35,6 +35,7 @@ public class EmployeeInfo implements Serializable{
         this.deductionRate = dRate/100;
     }
     
+    //getter and setter methods
     protected void setSurname(String newSurname){
         this.surname = newSurname;
     }
@@ -73,8 +74,7 @@ public class EmployeeInfo implements Serializable{
         }
         return "";
     }
-    
-    
+
     protected String getWorkLocation(){
         if(workLocation == 1){
             return "Toronto";    

@@ -9,11 +9,11 @@
  * @author Shawn Cameron
  */
 public class PTE extends EmployeeInfo {
-    private int hoursPerWeek;
+    private float hoursPerWeek;
     private int weeksPerYear;
     private float incomePerHour;
     
-    public PTE(int employeeNumber, String name, String surname, int sex, int workLocation, float income, int hours, int weeks, float dRate){
+    public PTE(int employeeNumber, String name, String surname, int sex, int workLocation, float income, float hours, int weeks, float dRate){
         super(employeeNumber, name, surname,sex,workLocation,income,dRate);
         this.hoursPerWeek = hours;
         this.weeksPerYear = weeks;
@@ -21,29 +21,37 @@ public class PTE extends EmployeeInfo {
         calIncome();
    
     }
+    //calculates the pay with the deduction rate
     private void calIncome(){
         this.payment = incomePerHour*hoursPerWeek*weeksPerYear*(1 - deductionRate);
     } 
+    
+    //getter and setter methods
     public void setHoursPerWeek(int newHours){
         this.hoursPerWeek = newHours;
         calIncome();
     }
+    
     public void setWeeksPerYear(int newWeeks){
         this.weeksPerYear = newWeeks;
         calIncome();
     }
+    
     public void setIncomePerHour(float newIncome){
         this.incomePerHour = newIncome;
         calIncome();
     }
-    public int getHoursPerWeek(){
+    
+    public float getHoursPerWeek(){
         return hoursPerWeek;
     }
+    
     public int getWeeksPerYear(){
         return weeksPerYear;
     }
+    
     public float getIncomePerHour(){
         return incomePerHour;
-    }
+    }  
 }
 

@@ -291,7 +291,11 @@ public class EditEmployee extends javax.swing.JFrame {
     private void toPartOrFullButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toPartOrFullButtonActionPerformed
         changeEType();
     }//GEN-LAST:event_toPartOrFullButtonActionPerformed
-   
+    
+    /**
+     * Shows the previous information on 
+     * the employee on editable fields
+     */
     private void showCurrentInfo(){
         if(theEmployee instanceof FTE){
             firstNameText.setText(theFullTimeE.getName());
@@ -314,48 +318,42 @@ public class EditEmployee extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * Determines what the type the edited employee is and 
+     * add them to the table if the information is valid
+     */
     private void saveChanges(){
         try{
+            String fN = firstNameText.getText();
+            String lN = lastNameText.getText();
+            int eNum = Integer.parseInt(employeeNumberText.getText());
+            int wL = getTheWorkLocation();
+            float dRate = Float.parseFloat(deductionRateText.getText());
+            checkDRate(dRate);
+            if (fN.isEmpty() || lN.isEmpty()){
+                throw new Exception();
+            }
+            
             if (toPartOrFullButton.getText() == "Change to Part Time"){
-                String fN = firstNameText.getText();
-                String lN = lastNameText.getText();
-                int eNum = Integer.parseInt(employeeNumberText.getText());
-                int wL = getTheWorkLocation();
-                float sal = Float.parseFloat(salOrIncomeText.getText());
-                float dRate = Float.parseFloat(deductionRateText.getText());
-                checkDRate(dRate);
-                if (fN.isEmpty() || lN.isEmpty()){
-                    throw new Exception();
-                }
-                
+                float sal = Float.parseFloat(salOrIncomeText.getText());                
                 FTE changedEmployee = new FTE(eNum,fN,lN,getTheSex(),wL,sal,dRate);
                 MainMenu.theHash.removeEmployee(theEmployee.getEmployeeNumber());
                 MainMenu.theHash.addToTable(changedEmployee);
-                MainMenu.theHash.setWasSaved(false);
-                MainMenu.displayEmployees();
-                this.dispose();
-            } else if(toPartOrFullButton.getText() == "Change to Full Time"){
-                String fN = firstNameText.getText();
-                String lN = lastNameText.getText();
-                int eNum = Integer.parseInt(employeeNumberText.getText());
-                int wL = getTheWorkLocation();
+                
+            } else {
                 float income = Float.parseFloat(salOrIncomeText.getText());
                 float hours = Float.parseFloat(hoursPerWeekText.getText());
                 int weeks = Integer.parseInt(weeksPerYearText.getText());
-                float dRate = Float.parseFloat(deductionRateText.getText());
                 checkWeeksYears(hours,weeks);
-                checkDRate(dRate);
-                
-                if (fN.isEmpty() || lN.isEmpty()){
-                    throw new Exception();
-                }
                 PTE changedEmployee = new PTE(eNum,fN,lN,getTheSex(),wL,income,hours,weeks,dRate);
                 MainMenu.theHash.removeEmployee(theEmployee.getEmployeeNumber());
                 MainMenu.theHash.addToTable(changedEmployee);
-                MainMenu.theHash.setWasSaved(false);
-                MainMenu.displayEmployees();
-                this.dispose();
             }
+            
+            MainMenu.theHash.setWasSaved(false);
+            MainMenu.displayEmployees();
+            this.dispose();
+            
         }catch(UnsupportedOperationException e){
             errorLabel.setText("The Employee Number you entered already exists");
             MainMenu.theHash.addToTable(theEmployee);
@@ -365,6 +363,11 @@ public class EditEmployee extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * Gets the work location integer value from the JComboBox
+     * @return the integer value 
+     * @throws Exception when the JComboBox is set to "Choose"
+     */
     private int getTheWorkLocation() throws Exception{
         int itemIndex;
         itemIndex = workLocationCBox.getSelectedIndex();
@@ -375,18 +378,32 @@ public class EditEmployee extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * Checks if the deduction rate is below 0% or above 100%
+     * @param dRate 
+     * @throws Exception when the deduction rate out of the range
+     */
     private void checkDRate(float dRate) throws Exception{
         if(dRate<0.0 || dRate>100.0){
             throw new Exception();
         }
     }
     
+    /**
+     * Checks if the hours and weeks are possible
+     * @param hours 
+     * @param weeks 
+     * @throws Exception when the hours per week or weeks per year are impossible
+     */
     private void checkWeeksYears(float hours, int weeks)throws Exception{
         if(weeks < 1 || weeks > 52 || hours <= 0 || hours > 168){
             throw new Exception();
         }
     }
-    
+    /**
+     * Selects the check box that corresponds to the sex of the employee
+     * @param e - the employee's information
+     */
     private void displaySex(EmployeeInfo e){
         String sex = e.getSex();
         if(sex == "Male"){
@@ -398,6 +415,11 @@ public class EditEmployee extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * returns the sex based on the check box selected
+     * @return the integer that represents the sex
+     * @throws Exception when no box is selected
+     */
     private int getTheSex()throws Exception{
         if(maleBox.isSelected()){
             return 0;
@@ -410,6 +432,11 @@ public class EditEmployee extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * Sets certain features visible and invisible 
+     * to allow the user to add the information
+     * for the new type
+     */
     private void changeEType(){
         if(toPartOrFullButton.getText() == "Change to Full Time"){
             hoursPerWeekText.setVisible(false);

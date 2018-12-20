@@ -1,4 +1,3 @@
-
 import java.util.ArrayList;
 import java.io.*;
 import java.nio.file.Files;
@@ -15,10 +14,9 @@ public class TheHashTable{
      * Variable Declaration 
      */
     private ArrayList<EmployeeInfo>[] buckets;
-    private String theFile;
-    private String dirFile = ".directory.ser";
+    private String theFile = ".employeeInfo.ser";
     private boolean wasSaved = true;
-    private boolean saveAsNeeded = true;
+
     
     
     /**
@@ -26,12 +24,13 @@ public class TheHashTable{
      * @param numOfBuckets - number of buckets that should be used 
      */
     public TheHashTable(int numOfBuckets) {
-        getLastDirector();
+        //getLastDirector();
         buckets = new ArrayList[numOfBuckets];
         for (int i = 0; i < numOfBuckets; i++) {
             buckets[i] = new ArrayList<EmployeeInfo>();
         }
     }
+    
     /**
      * Deletes all the Employees in the hash table
      * Then displays an empty JTable
@@ -44,6 +43,7 @@ public class TheHashTable{
         }
         MainMenu.displayEmployees();
     }
+    
     /**
      * Determines the bucket the employee should go / is in by 
      * getting the return value when their number is divided by 
@@ -141,6 +141,7 @@ public class TheHashTable{
         }
         return numAccOrder;
     }
+    
     /**
      * Collects the string and returns the employees who's employee number,
      * first name or last name starts with string collected
@@ -182,38 +183,20 @@ public class TheHashTable{
             }
         } 
         try{
+            Path theFilePath =  Paths.get(theFile);
+            File checkIfExist = new File(theFile);
+            if(checkIfExist.exists()){
+                Files.setAttribute(theFilePath, "dos:hidden", false);
+            }
+            
             FileOutputStream file = new FileOutputStream(theFile);
             ObjectOutputStream out= new ObjectOutputStream(file);
             out.writeObject(saving);
             out.close();
             file.close();
             
-        }catch(IOException e){
-            e.printStackTrace();
-        }
-        this.wasSaved = true;
-        
-    }
-    
-    /**
-     * Saves the ArrayList of the employees' information to the giving path 
-     * @param directory - collects from jFileChanger
-     */
-    public void saveAs(String directory){
-        ArrayList<EmployeeInfo> saving = new ArrayList<EmployeeInfo>();
-        for (int i = 0; i < buckets.length; i++) {
-            for (int j = 0; j < buckets[i].size(); j++) {
-                saving.add(buckets[i].get(j));
-            }
-        } 
-        try{
-            FileOutputStream file = new FileOutputStream(directory);
-            ObjectOutputStream out= new ObjectOutputStream(file);
-            out.writeObject(saving);
-            out.close();
-            file.close();
-            setLoadedFileDirectory(directory);
-            setSaveAsNeeded(false);
+            Files.setAttribute(theFilePath, "dos:hidden", true);
+            
         }catch(IOException e){
             e.printStackTrace();
         }
@@ -225,7 +208,6 @@ public class TheHashTable{
      * Loads the employee information from any file
      */    
     public void loadEmployeeInfo(){
-        getLastDirector();
         ArrayList<EmployeeInfo> loading = new ArrayList<EmployeeInfo>();
         try{
             FileInputStream file = new FileInputStream(theFile);
@@ -233,7 +215,6 @@ public class TheHashTable{
             loading = (ArrayList<EmployeeInfo>) objectsOut.readObject();
             file.close();
             objectsOut.close();
-            this.saveAsNeeded = false;
             for(int i = 0; i < loading.size();i++){
                 if(loading.get(i) instanceof PTE){
                     PTE add = (PTE) loading.get(i);
@@ -248,59 +229,8 @@ public class TheHashTable{
         }catch(Exception e){
             e.printStackTrace();
         }
-    }       
-    /**
-     * Saves the file path to be used for loading 
-     * and saving the last directory
-     * @param file - path of the file
-     */
-    public void setLoadedFileDirectory(String file){
-        this.theFile = file;
-        saveLastDirectory();
-    }
+    }  
     
-    /**
-     * saves the file path for the last file that was opened 
-     * and opens upon start up
-     */
-    public void saveLastDirectory(){
-        try{
-            Path theFilePath = Paths.get(dirFile);
-            
-            File fileToHide = new File(dirFile);
-            if(fileToHide.exists()){
-               Files.setAttribute(theFilePath, "dos:hidden", false); 
-            }
-            
-            FileOutputStream file = new FileOutputStream(dirFile);
-            ObjectOutputStream out= new ObjectOutputStream(file);
-            out.writeObject(theFile);
-            out.close();
-            file.close();
-            
-            Files.setAttribute(theFilePath, "dos:hidden", true);
-            
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-    }
-    
-    /**
-     * Reads the directory if the file exists 
-     * and allows it to be opened by loadEmployeeInfo()
-     */
-    private void getLastDirector(){
-        try{
-            FileInputStream file = new FileInputStream(dirFile);
-            ObjectInputStream objectsOut = new ObjectInputStream(file);
-            this.theFile = (String) objectsOut.readObject();
-            file.close();
-            objectsOut.close();
-            
-        }catch(Exception e){
-            this.saveAsNeeded = true;
-        }
-    }
     
     //getter and setter methods below 
     public void setWasSaved(boolean s){
@@ -310,14 +240,6 @@ public class TheHashTable{
     public boolean checkIfSaved(){
         return wasSaved;
     }   
-    
-    public void setSaveAsNeeded(boolean s){
-        this.saveAsNeeded=s;
-    }
-    
-    public boolean checkIfSaveAsNeeded(){
-        return saveAsNeeded;
-    }
     
     public String getFileName(){
         return theFile; 
