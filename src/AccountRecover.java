@@ -16,8 +16,8 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class AccountRecover extends javax.swing.JDialog {
     // needed to use the twilio api
-    private static final String ACCOUNT_SID = "AC5fa88acbe4a99de3704ca4f3fa83c0c6";
-    private static final String AUTH_TOKEN = "af467494a732c9e7068d6f0dfde5c5a4";
+    private static final String ACCOUNT_SID = "accountSid";
+    private static final String AUTH_TOKEN = "authToken";
     private final String twilioPhoneNum = "+15067025382";
     // stored temporary password
     private String tempPassword;
